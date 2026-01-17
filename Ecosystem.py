@@ -115,7 +115,7 @@ class Predator_Agents(mesa.Agent): # this is a class for the predators agents
 
 model = World_model(100,50,50,50)
 
-for i in range(50):
+for i in range(500):
     print(f"step {i}")
     model.step()
 
