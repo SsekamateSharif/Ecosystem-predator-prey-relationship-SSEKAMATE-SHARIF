@@ -40,8 +40,8 @@ class World_model(mesa.Model): #this is the model that entails all the agents
 class Prey_Agents(mesa.Agent): # this is the agent class that determines the prey character
     def __init__(self, unique_id, model):
         super().__init__(model) # this completes the inheritance from the mesa.Agent super class
-        # initially each prey has one unit of life
-        self.life = 1
+        # initially each prey has fifty units of life
+        self.life = 50
     # we then define the movement of our prey agents
     def move_prey(self): # moves the prey
         possible_step = self.model.grid.get_neighborhood(self.pos, moore = True, include_center= False) # gets the possible neighborhood of the agent
@@ -57,10 +57,12 @@ class Prey_Agents(mesa.Agent): # this is the agent class that determines the pre
             other = self.random.choice(cellmates) # get a random cellmate for the agents
             if other != self: # check if the agents is not equal to itself
                 if isinstance(other, Predator_Agents): # then check if it's a predator
-                    self.life = self.life -1
+                    if self.life > 0:
+                        self.life -= 5
+
                      # if the prey meets a predator it gets eaten, and it loses its life to the predator
     def death(self):
-        if self.life == 0:
+        if self.life <= 0:
             self.remove()
 
 
@@ -68,7 +70,9 @@ class Prey_Agents(mesa.Agent): # this is the agent class that determines the pre
     def step(self):
         self.move_prey()
         # first move the prey across the grid
-        self.death()
+        # the prey dies if it loses all its life
+        if self.life <= 0:
+            self.death()
         if self.life > 0:
             self.be_eaten()
 
@@ -78,7 +82,7 @@ class Prey_Agents(mesa.Agent): # this is the agent class that determines the pre
 class Predator_Agents(mesa.Agent): # this is a class for the predators agents
     def __init__(self, unique_id, model):
         super().__init__(model)
-        self.energy = 1  # each predator has one unit of energy
+        self.energy = 5  # each predator has five units of energy
 
     # we define the movement pattern of the predator agents
     def move_predator(self):
@@ -95,8 +99,8 @@ class Predator_Agents(mesa.Agent): # this is a class for the predators agents
             other = self.random.choice(cellmates) # pick a cellmate at random
             if other != self:
                 if isinstance(other, Prey_Agents): # check if it encounters the prey and it feeds on it
-                    self.energy += 1
-                    # it gets one unit of energy per prey that it feeds on
+                    self.energy += 5
+                    # it gets five units of energy per prey that it feeds on
 
 
     # then  we define the step method for the predator agents functionality
@@ -109,9 +113,9 @@ class Predator_Agents(mesa.Agent): # this is a class for the predators agents
 
 #implementation of our code
 
-model = World_model(200,100,50,50)
+model = World_model(100,50,50,50)
 
-for i in range(500):
+for i in range(50):
     print(f"step {i}")
     model.step()
 
@@ -127,7 +131,7 @@ if lives:
     plt.title("DISTRIBUTION OF PREY LIVES")
     plt.xlabel("LIVES")
     plt.ylabel("NUMBER OF PREYS")
-    plt.grid(True, alpha=0.3)
+    plt.grid(True, alpha=0.5)
     plt.show()
 else:
     print("No live prey agents found")
@@ -144,7 +148,7 @@ if energies:
     plt.title("DISTRIBUTION OF PREDATOR ENERGIES")
     plt.xlabel("ENERGIES")
     plt.ylabel("NUMBER OF PREDATORS")
-    plt.grid(True, alpha=0.3)
+    plt.grid(True, alpha=0.5)
     plt.show()
 else:
     print("No energies found")
