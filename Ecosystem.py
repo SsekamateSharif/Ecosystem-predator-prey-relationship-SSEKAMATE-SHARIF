@@ -109,9 +109,9 @@ class Predator_Agents(mesa.Agent): # this is a class for the predators agents
 
 #implementation of our code
 
-model = World_model(100,100,50,50)
+model = World_model(200,100,50,50)
 
-for i in range(1000):
+for i in range(500):
     print(f"step {i}")
     model.step()
 
@@ -130,7 +130,7 @@ if lives:
     plt.grid(True, alpha=0.3)
     plt.show()
 else:
-    print("No live agents found")
+    print("No live prey agents found")
 # create a graph for the predator energies
 
 energies = []

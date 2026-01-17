@@ -61,7 +61,7 @@ class Money_agent(mesa.Agent):
 
 model = Money_model(100,60,60)
 
-for i in range(1500): # we run the model in x steps
+for i in range(200): # we run the model in x steps
     print(f"Step {i}")
     model.step()
 
