@@ -2,10 +2,14 @@
 # so the agents are the preys and predators and the model that entails all the agents is the World
 # we first define the agent and model classes
 # we need to first import mesa library
+from tkinter.constants import RIGHT
+
 import mesa
 # we then import these libraries and we will use them for our visualization graphs for our simulations
 import matplotlib.pyplot as plt
 import seaborn as sns
+from prompt_toolkit.key_binding.bindings.mouse import LEFT
+
 
 # we then define our model class for our simulation
 
@@ -49,11 +53,11 @@ class Prey_Agents(mesa.Agent): # this is the agent class that determines the pre
     def __init__(self, unique_id, model):
         super().__init__(model) # this completes the inheritance from the mesa.Agent super class
         # initially each prey has fifty units of life
-        self.life = 50
+        self.life = 1
 
     # we then define the movement of our prey agents
     def move_prey(self): # moves the prey
-        possible_step = self.model.grid.get_neighborhood(self.pos, moore = True, include_center= False) # gets the possible neighborhood of the agent
+        possible_step = self.model.grid.get_neighborhood(self.pos, moore = True, include_center= False ) # gets the possible neighborhood of the agent
         new_pos = self.random.choice(possible_step) # this chooses a cell at random
 
         # moving the agent on the grid to its new position
@@ -67,7 +71,7 @@ class Prey_Agents(mesa.Agent): # this is the agent class that determines the pre
             if other != self: # check if the agents is not equal to itself
                 if isinstance(other, Predator_Agents): # then check if it's a predator
                     if self.life > 0: # check if the prey is alive
-                        self.life -= 5
+                        self.life -= 1
 
                      # if the prey meets a predator it gets eaten, and it loses its life to the predator
     def death(self):
